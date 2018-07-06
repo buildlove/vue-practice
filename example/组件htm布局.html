@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <list-component :peopelist="peopelist"></list-component>
+        <listdetail-component></listdetail-component>
+    </div>
+    <script>
+        // 列表项组件
+        let listHtml = `
+            <div class="listComponent">
+                <div class="peopelist" v-for="item of peopelist" :key="item">
+                    <div>
+                        <span>{{item.name}}</span>
+                        <span>{{item.sex}}</span>
+                    </div>
+                    <div>
+                        <span>{{item.phone}}</span>
+                    </div>
+                </div>
+            </div>
+        `
+        let listComponent = {
+            props: ["peopelist"],
+            template: listHtml
+        }
+
+        // 列表项详情组件
+        let listDetailHtml = `
+            <div class="listDetailComponent">
+                <div class="detailName">{{detailName}}</div>
+                <div class="detailList">
+                    <ul>
+                        <li v-for="item of detailList" :key="item">
+                            联系人: 
+                            <span>{{item}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        `
+        let listDetailComponent = {
+            template: listDetailHtml,
+            methods: {
+                getContactDetail: function (idx) {
+                    let self = this;
+                    idx = idx > 0 ? idx : 0
+                    Object.keys(self.contactDetails).forEach(function (item, index) {
+                        if (index === idx) {
+                            self.detailName = item;
+                            self.detailList = self.contactDetails[item];
+                        }
+                    })
+                }
+            },
+            mounted() {
+                this.getContactDetail()
+            },
+            data() {
+                return {
+                    detailName: "",
+                    detailList: [],
+                    contactDetails: {
+                        "张三": ["张三2", "张三3", "张三4"],
+                        "张三2": ["张三", "张三3", "张三"],
+                        "张三3": ["张三4"]
+                    }
+                }
+            }
+        }
+
+        // vue 实例
+        new Vue({
+            el: '#app',
+            components: {
+                "list-component": listComponent,
+                "listdetail-component": listDetailComponent
+            },
+            data() {
+                return {
+                    peopelist: [
+                        {
+                            name: "张三",
+                            sex: "男",
+                            phone: 12345678
+                        }, {
+                            name: "张三2",
+                            sex: "男",
+                            phone: 12345678
+                        }
+                        , {
+                            name: "张三3",
+                            sex: "男",
+                            phone: 12345678
+                        }, {
+                            name: "张三4",
+                            sex: "男",
+                            phone: 12345678
+                        }
+                    ]
+
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

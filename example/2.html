@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <list-component></list-component>
+        <lis-detail-component></lis-detail-component>
+    </div>
+    <script>
+        // 列表项组件
+        let listHtml = `
+            <div>
+                <div v-for="item of peopelist" :key="item">
+                    <div>
+                        <span>{{item.name}}</span>
+                        <span>{{item.sex}}</span>
+                    </div>
+                    <div>
+                        <span>{{item.phone}}</span>
+                    </div>
+                </div>
+            </div>
+        `
+        let listComponent = {
+            template: listHtml,
+            data() {
+                return {
+                    peopelist: [
+                        {
+                            name: "张三",
+                            sex: "男",
+                            phone: 12345678
+                        }, {
+                            name: "张三2",
+                            sex: "男",
+                            phone: 12345678
+                        }
+                        , {
+                            name: "张三3",
+                            sex: "男",
+                            phone: 12345678
+                        }, {
+                            name: "张三4",
+                            sex: "男",
+                            phone: 12345678
+                        }
+                    ],
+                    contactDetails: {
+                        "张三": ["张三2", "张三3", "张三4"],
+                        "张三2": ["张三", "张三3", "张三"],
+                        "张三3": ["张三4"]
+                    }
+                }
+            }
+        }
+
+        // 列表项详情组件
+        let listDetailHtml = `
+            <div>
+                <div>张三</div>
+                <div>
+                    <ul>
+                        <li>张三2</li>
+                        <li>张三3</li>
+                        <li>张三4</li>
+                    </ul>
+                </div>
+            </div>
+        `
+        let listDetailComponent = {
+            template: listDetailHtml,
+            data() {
+                return {
+                    contactDetails: {
+                        "张三": ["张三2", "张三3", "张三4"],
+                        "张三2": ["张三", "张三3", "张三"],
+                        "张三3": ["张三4"]
+                    }
+                }
+            }
+        }
+
+        // vue 实例
+        new Vue({
+            el: '#app',
+            components: {
+                "list-component": listComponent,
+                "lis-detail-component": listDetailComponent
+            }
+        })
+    </script>
+</body>
+
+</html>

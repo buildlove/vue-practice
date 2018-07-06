@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+    <title>局部组件添加</title>
+</head>
+<body>
+    <div id="app">
+        <list-component></list-component>
+        <lis-detail-component></lis-detail-component>
+    </div>
+    <script>
+        // 嫌疑人详情组件
+        let listComponent = {
+            template: "<div>{{peopelist}}</div>",
+            data() {
+                return {
+                    peopelist: "嫌疑人详情组件"
+                }
+            }
+        }
+
+        // 嫌疑人社会关系组件
+        let listDetailComponent = {
+            template: "<div>{{contactDetails}}</div>",
+            data() {
+                return {
+                    contactDetails: "嫌疑人社会关系组件"
+                }
+            }
+        }
+
+        // vue 实例
+        new Vue({
+            el: '#app',
+            components: {
+                "list-component": listComponent,
+                "lis-detail-component": listDetailComponent
+            }
+        })
+    </script>
+</body>
+</html>

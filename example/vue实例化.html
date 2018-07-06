@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+    <title>vue实例化</title>
+</head>
+<body>
+    <div id="app">{{msg}}</div>
+    <script>
+        new Vue({
+            el: '#app',
+            data(){
+                return {
+                    msg: "hello world"
+                }
+            }
+        })
+    </script>
+</body>
+</html>
