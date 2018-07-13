@@ -75,7 +75,7 @@
 
 <body>
     <div id="app">
-        <list-component :peopelist="peopelist"></list-component>
+        <list-component :peopelist="peopelist" ref="peopelistdom"></list-component>
         <listdetail-component></listdetail-component>
     </div>
     <script>
@@ -84,7 +84,7 @@
         // 列表项组件
         let listHtml = `
             <div class="listComponent">
-                <div class="peopelist" v-for="item of peopelist" :key="item" :id="item.name">
+                <div class="peopelist" v-for="item of peopelist" :key="item" :id="item.name" ref="list">
                     <div>
                         <span>{{item.name}}</span>
                         <span>{{item.sex}}</span>
@@ -97,7 +97,18 @@
         `
         let listComponent = {
             props: ["peopelist"],
-            template: listHtml
+            template: listHtml,
+            methods: {
+                changeTheBackground(name){
+                    this.$refs.list.forEach(function(ele){
+                        if(ele.id === name){
+                            ele.style.backgroundColor = "#00E700"
+                        }else{
+                            ele.style.backgroundColor = "#EBF0DF"
+                        }
+                    })
+                }
+            }
         }
 
         // 列表项详情组件
@@ -193,6 +204,7 @@
                 let self = this;
                 Event.$on("personalname", function(name){
                     self.getPersonalName(name)
+                    self.$refs.peopelistdom.changeTheBackground(name)
                 })
             },
             data() {
