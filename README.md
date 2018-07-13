@@ -158,7 +158,7 @@ html 部分
     </div>
 ```
 
-## 组件 html 布局
+## 组件 html 布局以及引用数据
 
 替换 listComponent.template
 
@@ -192,16 +192,179 @@ html 部分
     </div>
 ```
 
-引入数据 
+组件通信父传子引入数据
 
-## css 盒子模型以及引用数据
+在 vue 实例中添加所有嫌疑人列表数据
+
+```
+    // vue 实例
+    new Vue({
+        el: '#app',
+        components: {
+            "list-component": listComponent,
+            "listdetail-component": listDetailComponent
+        },
+        data() { // 添加 data 数据
+            return {
+                peopelist: [
+                    {
+                        name: "张三",
+                        sex: "男",
+                        phone: 12345678
+                    }, {
+                        name: "张三2",
+                        sex: "男",
+                        phone: 12345678
+                    }
+                    , {
+                        name: "张三3",
+                        sex: "男",
+                        phone: 12345678
+                    }, {
+                        name: "张三4",
+                        sex: "男",
+                        phone: 12345678
+                    }
+                ]
+
+            }
+        }
+    })
+```
+
+在嫌疑人社会关系组件中添加准备好的数据(方便起见贴上整个组件)
+
+1. mounted 函数在加载该组件时执行该函数
+
+2. methods 函数内储存自定义方法
+
+3. data 内写入准备好的数据
+
+4. getContactDetail 方法用来获取嫌疑人的索引查询嫌疑人的社会关系(默认是"张三", 如有同名同姓的纯属巧合)
 
 
+```
+        let listDetailComponent = {
+            template: listDetailHtml,
+            methods: {
+                getContactDetail: function (idx) {
+                    let self = this;
+                    idx = idx > 0 ? idx : 0
+                    Object.keys(self.contactDetails).forEach(function (item, index) {
+                        if (index === idx) {
+                            self.detailName = item;
+                            self.detailList = self.contactDetails[item];
+                        }
+                    })
+                }
+            },
+            mounted() {
+                this.getContactDetail()
+            },
+            data() {
+                return {
+                    detailName: "",
+                    detailList: [],
+                    contactDetails: {
+                        "张三": ["张三2", "张三3", "张三4"],
+                        "张三2": ["张三", "张三3", "张三"],
+                        "张三3": ["张三4"]
+                    }
+                }
+            }
+        }
+```
+
+在 html 中添加需要传入的数据
+
+```
+    <div id="app">
+        <list-component :peopelist="peopelist"></list-component>
+        <listdetail-component></listdetail-component>
+    </div>
+```
+
+在 嫌疑人详细信息组件中接收数据
+
+```
+    let listComponent = {
+        props: ["peopelist"],
+        template: listHtml
+    }
+```
+
+## css 盒子模型
+
+添加 css 样式
+
+```
+    <style>
+        /* 主页尺寸背景 */
+
+        #app {
+            width: 300px;
+            height: 450px;
+            background-color: #92CDDC;
+            padding: 15px;
+        }
+
+        /* 嫌疑人详情信息 */
+
+        .listComponent {
+            background-color: #F1DCDA;
+            height: 70%;
+            width: 89%;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .peopelist {
+            width: 99%;
+            background: #EBF0DF;
+            padding: 0px 0px 30px 0px;
+            margin-bottom: 5px;
+            border: 1px solid;
+        }
+
+        .peopelist:hover {
+            background: #cce09d
+        }
+
+        /* 嫌疑人社会关系信息 */
+
+        .listDetailComponent {
+            background: #FDE499;
+            height: 20%;
+            margin-top: 10px;
+            padding: 2px;
+        }
+
+        .detailName {
+            float: left;
+            padding: 34px;
+        }
+
+        .detailList {
+            padding-left: 100px;
+        }
+
+        .RelevantPerson {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .returnIcon {
+            background: url(./image/return.png);
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            background-size: 20px 22px;
+        }
+
+        .action {
+            background-color: #00E700;
+        }
+    </style>
+```
 
 
-
-
-## vue 组件通信之父传子
-
-
-## 相关想法
