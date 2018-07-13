@@ -12,7 +12,7 @@
         <listdetail-component></listdetail-component>
     </div>
     <script>
-        // 列表项组件
+        // 嫌疑人详细信息组件
         let listHtml = `
             <div class="listComponent">
                 <div class="peopelist" v-for="item of peopelist" :key="item">
@@ -31,7 +31,7 @@
             template: listHtml
         }
 
-        // 列表项详情组件
+        // 嫌疑人社会关系组件
         let listDetailHtml = `
             <div class="listDetailComponent">
                 <div class="detailName">{{detailName}}</div>
@@ -39,7 +39,7 @@
                     <ul>
                         <li v-for="item of detailList" :key="item">
                             联系人: 
-                            <span>{{item}}</span>
+                            <span class="decoration">{{item}}</span>
                         </li>
                     </ul>
                 </div>

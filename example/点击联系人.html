@@ -6,14 +6,16 @@
     <script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
     <style>
         /* 主页尺寸背景 */
-        #app { 
+
+        #app {
             width: 300px;
             height: 450px;
             background-color: #92CDDC;
             padding: 15px;
         }
-    
+
         /* 嫌疑人详情信息 */
+
         .listComponent {
             background-color: #F1DCDA;
             height: 70%;
@@ -21,7 +23,7 @@
             padding: 15px;
             overflow-y: auto;
         }
-    
+
         .peopelist {
             width: 99%;
             background: #EBF0DF;
@@ -29,24 +31,25 @@
             margin-bottom: 5px;
             border: 1px solid;
         }
-    
+
         .peopelist:hover {
             background: #cce09d
         }
 
         /* 嫌疑人社会关系信息 */
+
         .listDetailComponent {
             background: #FDE499;
             height: 20%;
             margin-top: 10px;
             padding: 2px;
         }
-    
+
         .detailName {
             float: left;
             padding: 34px;
         }
-    
+
         .detailList {
             padding-left: 100px;
         }
@@ -54,6 +57,18 @@
         .RelevantPerson {
             text-decoration: underline;
             cursor: pointer;
+        }
+
+        .returnIcon {
+            background: url(./image/return.png);
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            background-size: 20px 22px;
+        }
+
+        .action {
+            background-color: #00E700;
         }
     </style>
 </head>
@@ -64,10 +79,12 @@
         <listdetail-component></listdetail-component>
     </div>
     <script>
+        var Event = new Vue();
+
         // 列表项组件
         let listHtml = `
             <div class="listComponent">
-                <div class="peopelist" v-for="item of peopelist" :key="item">
+                <div class="peopelist" v-for="item of peopelist" :key="item" :id="item.name">
                     <div>
                         <span>{{item.name}}</span>
                         <span>{{item.sex}}</span>
@@ -86,12 +103,13 @@
         // 列表项详情组件
         let listDetailHtml = `
             <div class="listDetailComponent">
+                <div class="returnIcon" @click="getBackInfo"></div>
                 <div class="detailName">{{detailName}}</div>
                 <div class="detailList">
                     <ul>
-                        <li v-for="item of detailList" :key="item">
+                        <li v-for="(name, index) of detailList" :key="name">
                             <span class="ContactName">联系人:<span> 
-                            <span class="RelevantPerson">{{item}}</span>
+                            <span class="RelevantPerson" @click="findPeopleInfo(name)">{{name}}</span>
                         </li>
                     </ul>
                 </div>
@@ -100,15 +118,40 @@
         let listDetailComponent = {
             template: listDetailHtml,
             methods: {
-                getContactDetail: function (idx) {
+                getContactDetail: function (idx, type) {
                     let self = this;
                     idx = idx > 0 ? idx : 0
                     Object.keys(self.contactDetails).forEach(function (item, index) {
                         if (index === idx) {
                             self.detailName = item;
                             self.detailList = self.contactDetails[item];
+                            if(type != "noCache"){
+                                self.cache.push(index)
+                            }
                         }
                     })
+                },
+                findPeopleInfo: function(name){
+                    let self = this;
+                    let isExist = false
+                    Object.keys(this.contactDetails).forEach(function(key, index){
+                        if(name === key ){
+                            Event.$emit('personalname', name)
+                            self.getContactDetail(index)
+                            isExist = true
+                        }
+                    })
+                    if(!isExist){
+                        Event.$emit('personalname', name)
+                        alert("查询的联系人没有匹配到社会关系")
+                    }       
+                },
+                getBackInfo: function(){
+                    let current = this.cache.length - 1
+                    if (current > 0){
+                        this.getContactDetail(this.cache[current - 1], "noCache")
+                        this.cache.splice(current, 1)
+                    }
                 }
             },
             mounted() {
@@ -118,10 +161,17 @@
                 return {
                     detailName: "",
                     detailList: [],
+                    cache: [],
                     contactDetails: {
                         "张三": ["张三2", "张三3", "张三4"],
-                        "张三2": ["张三", "张三3", "张三"],
-                        "张三3": ["张三4"]
+                        "张三1": ["张三", "张三3", "张三4"],
+                        "张三2": ["张三8", "张三3", "张三1"],
+                        "张三3": ["张三6", "张三2", "张三"],
+                        "张三4": ["张三2", "张三3", "张三5"],
+                        "张三5": ["张三3", "张三3", "张三7"],
+                        "张三6": ["张三4", "张三3", "张三"],
+                        "张三7": ["张三2", "张三3"],
+                        "张三8": ["张三4"],
                     }
                 }
             }
@@ -133,6 +183,17 @@
             components: {
                 "list-component": listComponent,
                 "listdetail-component": listDetailComponent
+            },
+            methods: {
+                getPersonalName: function(name){
+                    location.href = location.pathname + "#" + name
+                }
+            },
+            mounted() {
+                let self = this;
+                Event.$on("personalname", function(name){
+                    self.getPersonalName(name)
+                })
             },
             data() {
                 return {
@@ -155,20 +216,20 @@
                             sex: "男",
                             phone: 15377664444
                         }, {
-                            name: "张三",
+                            name: "张三5",
                             sex: "男",
                             phone: 15377665555
                         }, {
-                            name: "张三2",
+                            name: "张三6",
                             sex: "男",
                             phone: 15377666666
                         }
                         , {
-                            name: "张三3",
+                            name: "张三7",
                             sex: "男",
                             phone: 15377667777
                         }, {
-                            name: "张三4",
+                            name: "张三8",
                             sex: "男",
                             phone: 15377668888
                         }
