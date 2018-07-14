@@ -367,4 +367,73 @@ html 部分
     </style>
 ```
 
+## 点击联系人
+
+DOM 操作
+
+1. DOM 操作在 Vue 内是有自己的一套接口的， 一般情况下是在 html 标签上添加 ref="dom", 所以不要用 jquery。
+
+2. 在方法内使用 this.refs.dom 调用修改相关数据和 dom, 如果在不清楚的情况下可先打印 this.refs.dom，查看内部方法。
+
+3. 使用操作 DOM 的方式来添加修改选中联系人的背景颜色和子组件方法。
+
+在嫌疑人列表 template 中添加 ref="list"
+
+```
+    <div class="listComponent">
+        <div class="peopelist" v-for="item of peopelist" :key="item" :id="item.name" ref="list">
+            <div>
+                <span>{{item.name}}</span>
+                <span>{{item.sex}}</span>
+            </div>
+            <div>
+                <span>{{item.phone}}</span>
+            </div>
+        </div>
+    </div>
+```
+
+在嫌疑人列表中操作 dom 控制
+
+```
+    let listComponent = {
+        props: ["peopelist"],
+        template: listHtml,
+        methods: {
+            changeTheBackground(name){
+                this.$refs.list.forEach(function(ele){
+                    if(ele.id === name){
+                        ele.style.backgroundColor = "#00E700"
+                    }else{
+                        ele.style.backgroundColor = "#EBF0DF"
+                    }
+                })
+            }
+        }
+    }
+```
+
+在主页组件 html 上写入 ref="peopelistdom"
+
+```
+    <list-component :peopelist="peopelist" ref="peopelistdom"></list-component>
+```
+
+在主页的 Vue 实例中添加监听控制
+
+```
+    mounted() {
+        let self = this;
+        Event.$on("personalname", function(name){
+            self.getPersonalName(name)
+            self.$refs.peopelistdom.changeTheBackground(name)
+        })
+    },
+```
+
+以上功能当点击联系人时，主页监听到联系人名称，使用子组件的方法来操作子组件改变选中联系人的背景颜色
+
+
+
+
 
