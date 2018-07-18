@@ -1,7 +1,5 @@
 浅谈 vue 与 webpack
 
-![avatar](/example/image/return.png)
-
 作为吹嘘改变世界的群体中的一员本来不想写基础皮毛的东西, 无奈每次和别人吹牛总是吹的别人听不懂, 确实无奈, 为此我潜心研究, 决定出手一篇你们看得懂的技术文章。
 
 看完你可以循序渐进的学到
@@ -120,6 +118,8 @@
     </script>
 ```
 
+效果
+
 ![效果](/example/image/1.png)
 
 ## 局部组件添加
@@ -165,6 +165,8 @@ html 部分
         <lis-detail-component></lis-detail-component>
     </div>
 ```
+
+效果
 
 ![效果](/example/image/2.png)
 
@@ -303,6 +305,8 @@ html 部分
     }
 ```
 
+效果
+
 ![效果](/example/image/3.png)
 
 ## css 盒子模型
@@ -379,9 +383,6 @@ html 部分
     </style>
 ```
 
-<<<<<<< HEAD
-![效果](/example/image/software.gif)
-=======
 ## 点击联系人
 
 DOM 操作
@@ -448,8 +449,8 @@ DOM 操作
 
 以上功能当点击联系人时，主页监听到联系人名称，使用子组件的方法来操作子组件改变选中联系人的背景颜色
 
+效果
+
+![效果](/example/image/software.gif)
 
 
-
-
->>>>>>> b98af96d7924c2b21a96bcafa881f015cb537e0b
