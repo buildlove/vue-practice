@@ -81,7 +81,7 @@
     <script>
         var Event = new Vue();
 
-        // 列表项组件
+        // 嫌疑人详情组件
         let listHtml = `
             <div class="listComponent">
                 <div class="peopelist" v-for="item of peopelist" :key="item" :id="item.name" ref="list">
@@ -111,7 +111,7 @@
             }
         }
 
-        // 列表项详情组件
+        // 嫌疑人关系组件
         let listDetailHtml = `
             <div class="listDetailComponent">
                 <div class="returnIcon" @click="getBackInfo"></div>
