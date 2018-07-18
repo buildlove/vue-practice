@@ -1,11 +1,17 @@
 浅谈 vue 与 webpack
 
+![avatar](/example/image/return.png)
+
 作为吹嘘改变世界的群体中的一员本来不想写基础皮毛的东西, 无奈每次和别人吹牛总是吹的别人听不懂, 确实无奈, 为此我潜心研究, 决定出手一篇你们看得懂的技术文章。
 
 看完你可以循序渐进的学到
 
 * vue 基础
 * webpack 单页面打包应用程序
+
+## 产品效果
+
+![产品](/example/image/software.gif)
 
 ## 这个产品的功能和意义
 
@@ -22,7 +28,7 @@
 
 > 特别说明: 以下设计是借鉴, 代码是原创。
 
-## 需求分解(设计图上标注文字)
+## 需求分解
 
 三个组件
 第一页组件, 显示载入数据按钮点击之后显示第二页组件。
@@ -35,7 +41,7 @@
     2.联系人, 选中后列表组件展示并选中列表项组件, 展示联系人详情。
     3.可以进一步点击联系人。 不论点击多少步都支持单步回退到起点。
 
-## 数据字段设计(设计图上标注文字)
+## 数据字段设计
 
 嫌疑人详细信息列表
 
@@ -108,11 +114,13 @@
         var app = new Vue({
             el: '#app',
             data: {
-                message: 'Hello Vue!'
+                message: 'hello world!'
             }
         })
     </script>
 ```
+
+![效果](/example/image/1.png)
 
 ## 局部组件添加
 
@@ -124,7 +132,7 @@ script 标签部分
         template: "<div>{{peopelist}}</div>",
         data(){
             return {
-                peopelist: "列表项组件"
+                peopelist: "嫌疑人详情组件"
             }
         }
     }
@@ -134,7 +142,7 @@ script 标签部分
         template: "<div>{{contactDetails}}</div>",
         data(){
             return {
-                contactDetails: "列表项组件"
+                contactDetails: "嫌疑人社会关系组件"
             }
         }
     }
@@ -157,6 +165,8 @@ html 部分
         <lis-detail-component></lis-detail-component>
     </div>
 ```
+
+![效果](/example/image/2.png)
 
 ## 组件 html 布局以及引用数据
 
@@ -293,6 +303,8 @@ html 部分
     }
 ```
 
+![效果](/example/image/3.png)
+
 ## css 盒子模型
 
 添加 css 样式
@@ -367,4 +379,4 @@ html 部分
     </style>
 ```
 
-
+![效果](/example/image/software.gif)
