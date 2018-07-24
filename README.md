@@ -7,7 +7,7 @@ vue 和 webpack
 
 ## 产品效果
 
-![产品](/example/image/software.gif)
+![产品](./images/5.gif)
 
 ## 需求分解
 
