@@ -1,0 +1,38 @@
+{
+  "name": "v1.0.1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack --mode production --config webpack.config.js",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --mode development --config webpack.config.js"
+  },
+  "author": "liyang",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-runtime": "^6.26.0",
+    "cross-env": "^5.2.0",
+    "css-loader": "^1.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "style-loader": "^0.21.0",
+    "vue-hot-reload-api": "^2.3.0",
+    "vue-html-loader": "^1.2.4",
+    "vue-loader": "^15.2.6",
+    "vue-resource": "^1.5.1",
+    "vue-template-compiler": "^2.5.16"
+  },
+  "devDependencies": {
+    "babel-plugin-component": "^1.1.1",
+    "file-loader": "^1.1.11",
+    "url-loader": "^1.0.1",
+    "vue": "^2.5.16",
+    "webpack": "^4.16.2",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
+  }
+}

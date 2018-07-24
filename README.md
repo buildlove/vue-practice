@@ -1,42 +1,26 @@
-浅谈 vue 与 webpack
+vue 和 webpack
 
-作为吹嘘改变世界的群体中的一员本来不想写基础皮毛的东西, 无奈每次和别人吹牛总是吹的别人听不懂, 确实无奈, 为此我潜心研究, 决定出手一篇你们看得懂的技术文章。
+通过一个小产品总结过去一段时间的学习。
 
-看完你可以循序渐进的学到
-
-* vue 基础
-* webpack 单页面打包应用程序
+* vue 框架
+* webpack 打包单页面应用程序
 
 ## 产品效果
 
 ![产品](/example/image/software.gif)
 
-## 这个产品的功能和意义
-
-功能: 通过已有数据可查看嫌疑人的社会关系和详情信息。
-意义: 
-1. 快速直观的通过社会关系找到团伙作战的可能。
-2. 通过社会关系了解是否存在疑似犯罪或包庇的情况。
-3. 保卫和预防人民财产和生命安全不受侵犯。
-4. 如有不足之处请参考每天晚上七点整的新闻联播。
-
-## 关于设计
-
-伟哥曾经说过: "设计占整个产品开发的百分之70的时间, 好的设计不需要深度思考", 设计是什么？ 温博士说过: "设计就是分解需求, 往细了分", 我相信每一个大神, 相信弄个好的设计需要花费很大的精力, 所以为了让需求变得非常具体,专注的写一篇技术文章, 我决定使用曾经的面试题来写, 这个设计简单, 重在完整(偷笑)。
-
-> 特别说明: 以下设计是借鉴, 代码是原创。
-
 ## 需求分解
 
-三个组件
 第一页组件, 显示载入数据按钮点击之后显示第二页组件。
-第二页列表组件
+
+第二页嫌疑人详细信息列表
     1.带滚动条, 可以上下滚动
-    2.在详情中选中联系人时, 会自动滚动到对应位置。
-    3.列表项组件支持左键单击, 状态为选中
-第三页列表详情组件
-    1.回退按钮
-    2.联系人, 选中后列表组件展示并选中列表项组件, 展示联系人详情。
+    2.在嫌疑人社会关系中点击联系人时, 会自动滚动到嫌疑人详细信息列表并添加背景颜色标记。
+    3.嫌疑人组件支持左键单击, 状态为选中
+
+第三页嫌疑人社会关系
+    1.回退按钮, 记录每一次操作数据, 每次回退的时候删除数据。
+    2.联系人, 选中后嫌疑人组件展示并选中列表项组件, 展示联系人详情。
     3.可以进一步点击联系人。 不论点击多少步都支持单步回退到起点。
 
 ## 数据字段设计
@@ -56,29 +40,31 @@
 
 ```
     const ContactDetails = {
-        '张三': ['张三2', '张三3', '张三4'],
-        '张三2': ['张三', '张三3', '张三'],
-        '张三3': ['张三4'],
+        "张三": ["张三2", "张三3", "张三4"],
+        "张三1": ["张三", "张三3", "张三4"],
+        "张三2": ["张三8", "张三3", "张三1"],
+        "张三3": ["张三6", "张三2", "张三"],
+        "张三4": ["张三2", "张三3", "张三5"],
+        "张三5": ["张三3", "张三3", "张三7"],
+        "张三6": ["张三4", "张三3", "张三"],
+        "张三7": ["张三2", "张三3"],
+        "张三8": ["张三4"],
     } 
 ```
 
-## 想法
-
-> 希望你跟我有一样的想法, 如果你觉得你的想法比较好可以给我发邮件(564845354@qq.com)
-
-### 初始想法
-
-1.由于是面试题, 需要快速实现产品界面和功能。
-
-2.如果有时间再一步一步搭建 vue 脚手架优化目录便于项目的快速迭代和协同开发。
-
-3.第一步应该创建一个 html 快速把产品做出来(只使用一个 html 完成[开发步骤]内的所有步骤)。
-
 ### 开发步骤
 
-1.引入 vue.js ( 通过 script 标签直接引入在线 cdn 文件), 实例化 vue 组件。 5分钟
+1.创建一个 html 快速做出功能。
 
-2.创建两个局部组件作为人物关系页/人物详情页(局部/全局组件知道就好)。 5分钟
+2.分解 html 和 vue 各个组件代码到对应目录。
+
+3.引入 webpack, 配置 webpack 常用插件。
+
+### 开发步骤（0.0.1)
+
+1.引入 vue.js ( 通过 script 标签直接引入在线 cdn 文件), 实例化 vue 组件。
+
+2.创建两个局部组件作为人物关系页/人物详情页(局部/全局组件知道就好)。
 
 5.通过组件模板布局组件 html。
 
@@ -88,369 +74,16 @@
 
 8.使用 vue 基础语法实现数据的展示。
 
-### webpack 的引入和目录/文件的拆分
+### 开发步骤（1.0.1)
 
-1.拆分所有代码到对应的文件 js/css/html/vue。
+1.拆分 css、js, 使用 style、script 标签引入。
 
-2.拆分组件到对应的目录, 使用 commonjs 引入模块的方式引入各种文件。
+2.拆分 vue 各个组件使用模块化方式引入。
 
-3.one by one 的去配置 webpack 的热更新、别名、开发/生产环境等等。
+3.使用 npm 来初始化项目引入 webpack 基本插件。
 
-## vue 实例化
+4.配置 webpack 的热更新、别名、开发/生产环境等等。
 
-创建一个 html 文件, 在 head 处引入 script标签
-
-```
-    <script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
-```
-
-在 body 处写入
-
-```
-    <div id="app">{{msg}}</div>
-    <script>
-        var app = new Vue({
-            el: '#app',
-            data: {
-                message: 'hello world!'
-            }
-        })
-    </script>
-```
-
-效果
-
-![效果](/example/image/1.png)
-
-## 局部组件添加
-
-script 标签部分
-
-```
-    // 嫌疑人详情组件
-    let listComponent = {
-        template: "<div>{{peopelist}}</div>",
-        data(){
-            return {
-                peopelist: "嫌疑人详情组件"
-            }
-        }
-    }
-
-    // 嫌疑人社会关系组件
-    let listDetailComponent = {
-        template: "<div>{{contactDetails}}</div>",
-        data(){
-            return {
-                contactDetails: "嫌疑人社会关系组件"
-            }
-        }
-    }
-
-    // vue 实例
-    new Vue({
-        el: '#app',
-        components: {
-            "list-component": listComponent,
-            "lis-detail-component": listDetailComponent
-        }
-    })
-```
-
-html 部分
-
-```
-    <div id="app">
-        <list-component></list-component>
-        <lis-detail-component></lis-detail-component>
-    </div>
-```
-
-效果
-
-![效果](/example/image/2.png)
-
-## 组件 html 布局以及引用数据
-
-替换 listComponent.template
-
-```
-    <div class="listComponent">
-        <div class="peopelist" v-for="item of peopelist" :key="item">
-            <div>
-                <span>{{item.name}}</span>
-                <span>{{item.sex}}</span>
-            </div>
-            <div>
-                <span>{{item.phone}}</span>
-            </div>
-        </div>
-    </div>
-```
-
-替换 listDetailComponent.template
-
-```
-    <div class="listDetailComponent">
-        <div class="detailName">{{detailName}}</div>
-        <div class="detailList">
-            <ul>
-                <li v-for="item of detailList" :key="item">
-                    联系人: 
-                    <span>{{item}}</span>
-                </li>
-            </ul>
-        </div>
-    </div>
-```
-
-组件通信父传子引入数据
-
-在 vue 实例中添加所有嫌疑人列表数据
-
-```
-    // vue 实例
-    new Vue({
-        el: '#app',
-        components: {
-            "list-component": listComponent,
-            "listdetail-component": listDetailComponent
-        },
-        data() { // 添加 data 数据
-            return {
-                peopelist: [
-                    {
-                        name: "张三",
-                        sex: "男",
-                        phone: 12345678
-                    }, {
-                        name: "张三2",
-                        sex: "男",
-                        phone: 12345678
-                    }
-                    , {
-                        name: "张三3",
-                        sex: "男",
-                        phone: 12345678
-                    }, {
-                        name: "张三4",
-                        sex: "男",
-                        phone: 12345678
-                    }
-                ]
-
-            }
-        }
-    })
-```
-
-在嫌疑人社会关系组件中添加准备好的数据(方便起见贴上整个组件)
-
-1. mounted 函数在加载该组件时执行该函数
-
-2. methods 函数内储存自定义方法
-
-3. data 内写入准备好的数据
-
-4. getContactDetail 方法用来获取嫌疑人的索引查询嫌疑人的社会关系(默认是"张三", 如有同名同姓的纯属巧合)
-
-
-```
-        let listDetailComponent = {
-            template: listDetailHtml,
-            methods: {
-                getContactDetail: function (idx) {
-                    let self = this;
-                    idx = idx > 0 ? idx : 0
-                    Object.keys(self.contactDetails).forEach(function (item, index) {
-                        if (index === idx) {
-                            self.detailName = item;
-                            self.detailList = self.contactDetails[item];
-                        }
-                    })
-                }
-            },
-            mounted() {
-                this.getContactDetail()
-            },
-            data() {
-                return {
-                    detailName: "",
-                    detailList: [],
-                    contactDetails: {
-                        "张三": ["张三2", "张三3", "张三4"],
-                        "张三2": ["张三", "张三3", "张三"],
-                        "张三3": ["张三4"]
-                    }
-                }
-            }
-        }
-```
-
-在 html 中添加需要传入的数据
-
-```
-    <div id="app">
-        <list-component :peopelist="peopelist"></list-component>
-        <listdetail-component></listdetail-component>
-    </div>
-```
-
-在 嫌疑人详细信息组件中接收数据
-
-```
-    let listComponent = {
-        props: ["peopelist"],
-        template: listHtml
-    }
-```
-
-效果
-
-![效果](/example/image/3.png)
-
-## css 盒子模型
-
-添加 css 样式
-
-```
-    <style>
-        /* 主页尺寸背景 */
-
-        #app {
-            width: 300px;
-            height: 450px;
-            background-color: #92CDDC;
-            padding: 15px;
-        }
-
-        /* 嫌疑人详情信息 */
-
-        .listComponent {
-            background-color: #F1DCDA;
-            height: 70%;
-            width: 89%;
-            padding: 15px;
-            overflow-y: auto;
-        }
-
-        .peopelist {
-            width: 99%;
-            background: #EBF0DF;
-            padding: 0px 0px 30px 0px;
-            margin-bottom: 5px;
-            border: 1px solid;
-        }
-
-        .peopelist:hover {
-            background: #cce09d
-        }
-
-        /* 嫌疑人社会关系信息 */
-
-        .listDetailComponent {
-            background: #FDE499;
-            height: 20%;
-            margin-top: 10px;
-            padding: 2px;
-        }
-
-        .detailName {
-            float: left;
-            padding: 34px;
-        }
-
-        .detailList {
-            padding-left: 100px;
-        }
-
-        .RelevantPerson {
-            text-decoration: underline;
-            cursor: pointer;
-        }
-
-        .returnIcon {
-            background: url(./image/return.png);
-            width: 20px;
-            height: 20px;
-            position: absolute;
-            background-size: 20px 22px;
-        }
-
-        .action {
-            background-color: #00E700;
-        }
-    </style>
-```
-
-## 点击联系人
-
-DOM 操作
-
-1. DOM 操作在 Vue 内是有自己的一套接口的， 一般情况下是在 html 标签上添加 ref="dom", 所以不要用 jquery。
-
-2. 在方法内使用 this.refs.dom 调用修改相关数据和 dom, 如果在不清楚的情况下可先打印 this.refs.dom，查看内部方法。
-
-3. 使用操作 DOM 的方式来添加修改选中联系人的背景颜色和子组件方法。
-
-在嫌疑人列表 template 中添加 ref="list"
-
-```
-    <div class="listComponent">
-        <div class="peopelist" v-for="item of peopelist" :key="item" :id="item.name" ref="list">
-            <div>
-                <span>{{item.name}}</span>
-                <span>{{item.sex}}</span>
-            </div>
-            <div>
-                <span>{{item.phone}}</span>
-            </div>
-        </div>
-    </div>
-```
-
-在嫌疑人列表中操作 dom 控制
-
-```
-    let listComponent = {
-        props: ["peopelist"],
-        template: listHtml,
-        methods: {
-            changeTheBackground(name){
-                this.$refs.list.forEach(function(ele){
-                    if(ele.id === name){
-                        ele.style.backgroundColor = "#00E700"
-                    }else{
-                        ele.style.backgroundColor = "#EBF0DF"
-                    }
-                })
-            }
-        }
-    }
-```
-
-在主页组件 html 上写入 ref="peopelistdom"
-
-```
-    <list-component :peopelist="peopelist" ref="peopelistdom"></list-component>
-```
-
-在主页的 Vue 实例中添加监听控制
-
-```
-    mounted() {
-        let self = this;
-        Event.$on("personalname", function(name){
-            self.getPersonalName(name)
-            self.$refs.peopelistdom.changeTheBackground(name)
-        })
-    },
-```
-
-以上功能当点击联系人时，主页监听到联系人名称，使用子组件的方法来操作子组件改变选中联系人的背景颜色
-
-效果
-
-![效果](/example/image/software.gif)
+> 以上步骤只用于当前项目。
 
 

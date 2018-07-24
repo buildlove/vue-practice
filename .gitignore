@@ -1,0 +1,11 @@
+node_modules/
+/.idea/*
+/log/*
+/compressfile/*
+npm-debug.log
+package-lock.json
+/config/
+.vscode/
+dist/
+build/
+

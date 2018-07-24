@@ -1,0 +1,80 @@
+/* 主页尺寸背景 */
+#app {
+    width: 300px;
+    height: 450px;
+    padding: 15px;
+    position: relative;
+    background-color: #92CDDC;
+}
+
+.component-content {
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.btn-loading {
+    margin: 50% 30%;
+    width: 110px;
+    height: 100px;
+    background-color: #fff;
+    line-height: 94px;
+    text-align: center;
+    position: absolute;
+}
+
+/* 嫌疑人详情信息 */
+.listComponent {
+    background-color: #F1DCDA;
+    height: 70%;
+    width: 89%;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.peopelist {
+    width: 99%;
+    background: #EBF0DF;
+    padding: 0px 0px 30px 0px;
+    margin-bottom: 5px;
+    border: 1px solid;
+}
+
+.peopelist:hover {
+    background: #cce09d
+}
+
+/* 嫌疑人社会关系信息 */
+
+.listDetailComponent {
+    background: #FDE499;
+    height: 20%;
+    margin-top: 10px;
+    padding: 2px;
+}
+
+.detailName {
+    float: left;
+    padding: 34px;
+}
+
+.detailList {
+    padding-left: 100px;
+}
+
+.RelevantPerson {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.returnIcon {
+    background: url(../image/return.png);
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    background-size: 20px 22px;
+}
+
+.action {
+    background-color: #00E700;
+}

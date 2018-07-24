@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="./libs/vue.min.js"></script>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="btn-loading" @click="showPage" ref="loading">载入中...</div>
+        <div class="component-content" ref="components">
+            <list-component :peopelist="peopelist" ref="peopelistdom"></list-component>
+            <listdetail-component></listdetail-component>
+        </div>
+    </div>
+    <script>
+        var Event = new Vue();
+
+        // 嫌疑人详情组件
+        let listHtml = `
+            <div class="listComponent">
+                <div class="peopelist" v-for="item of peopelist" :key="item" :id="item.name" ref="list" @click="sendDataToOtherCom(item.name)">
+                    <div>
+                        <span>{{item.name}}</span>
+                        <span>{{item.sex}}</span>
+                    </div>
+                    <div>
+                        <span>{{item.phone}}</span>
+                    </div>
+                </div>
+            </div>
+        `
+        let listComponent = {
+            props: ["peopelist"],
+            template: listHtml,
+            methods: {
+                changeTheBackground(name) {
+                    this.$refs.list.forEach(function (ele) {
+                        if (ele.className.indexOf("action") !== -1){
+                            ele.className = "peopelist"
+                        }
+                        if (ele.id === name) {
+                            ele.className = ele.className + " action"
+                        }
+
+                    })
+                },
+                sendDataToOtherCom(name) {
+                    Event.$emit("clickCurrentDivName", name)
+                }
+            }
+        }
+
+        // 嫌疑人关系组件
+        let listDetailHtml = `
+            <div class="listDetailComponent">
+                <div class="returnIcon" @click="getBackInfo"></div>
+                <div class="detailName">{{detailName}}</div>
+                <div class="detailList">
+                    <ul>
+                        <li v-for="(name, index) of detailList" :key="index">
+                            <span class="ContactName">联系人:<span> 
+                            <span class="RelevantPerson" @click="findPeopleInfo(name)">{{name}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        `
+        let listDetailComponent = {
+            template: listDetailHtml,
+            methods: {
+                getContactDetail: function (idx, type) {
+                    let self = this;
+                    idx = idx > 0 ? idx : 0
+                    Object.keys(self.contactDetails).forEach(function (item, index) {
+                        if (index === idx) {
+                            self.detailName = item;
+                            self.detailList = self.contactDetails[item];
+                            if (type != "noCache") {
+                                self.cache.push(index)
+                            }
+                        }
+                    })
+                },
+                findPeopleInfo: function (name) {
+                    let self = this;
+                    let isExist = false
+                    Object.keys(this.contactDetails).forEach(function (key, index) {
+                        if (name === key) {
+                            Event.$emit('personalname', name)
+                            self.getContactDetail(index)
+                            isExist = true
+                        }
+                    })
+                    if (!isExist) {
+                        Event.$emit('personalname', name)
+                        alert("查询的联系人没有匹配到社会关系")
+                    }
+                },
+                getBackInfo: function () {
+                    let current = this.cache.length - 1
+                    if (current > 0) {
+                        this.getContactDetail(this.cache[current - 1], "noCache")
+                        this.cache.splice(current, 1)
+                    }
+                }
+            },
+            mounted() {
+                let self = this;
+                this.getContactDetail()
+                Event.$on("clickCurrentDivName", function (name) {
+                    self.findPeopleInfo(name)
+                })
+            },
+            data() {
+                return {
+                    detailName: "",
+                    detailList: [],
+                    cache: [],
+                    contactDetails: {
+                        "张三": ["张三2", "张三3", "张三4"],
+                        "张三1": ["张三", "张三3", "张三4"],
+                        "张三2": ["张三8", "张三3", "张三1"],
+                        "张三3": ["张三6", "张三2", "张三"],
+                        "张三4": ["张三2", "张三3", "张三5"],
+                        "张三5": ["张三3", "张三3", "张三7"],
+                        "张三6": ["张三4", "张三3", "张三"],
+                        "张三7": ["张三2", "张三3"],
+                        "张三8": ["张三4"],
+                    }
+                }
+            }
+        }
+
+        // vue 实例
+        new Vue({
+            el: '#app',
+            components: {
+                "list-component": listComponent,
+                "listdetail-component": listDetailComponent
+            },
+            methods: {
+                getPersonalName: function (name) {
+                    location.href = location.pathname + "#" + name
+                },
+                showPage: function () {
+                    this.$refs.loading.style.display = "none";
+                    this.$refs.components.style.display = "block";
+                }
+            },
+            mounted() {
+                let self = this;
+                Event.$on("personalname", function (name) {
+                    self.getPersonalName(name)
+                    self.$refs.peopelistdom.changeTheBackground(name)
+                })
+                setTimeout(() => {
+                    self.showPage()
+                }, 3000);
+            },
+            data() {
+                return {
+                    peopelist: [
+                        {
+                            name: "张三",
+                            sex: "男",
+                            phone: 15377664111
+                        }, {
+                            name: "张三2",
+                            sex: "男",
+                            phone: 15377664222
+                        }
+                        , {
+                            name: "张三3",
+                            sex: "男",
+                            phone: 15377664333
+                        }, {
+                            name: "张三4",
+                            sex: "男",
+                            phone: 15377664444
+                        }, {
+                            name: "张三5",
+                            sex: "男",
+                            phone: 15377665555
+                        }, {
+                            name: "张三6",
+                            sex: "男",
+                            phone: 15377666666
+                        }
+                        , {
+                            name: "张三7",
+                            sex: "男",
+                            phone: 15377667777
+                        }, {
+                            name: "张三8",
+                            sex: "男",
+                            phone: 15377668888
+                        }
+                    ]
+
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
