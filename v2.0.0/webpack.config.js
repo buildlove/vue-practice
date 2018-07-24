@@ -5,7 +5,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 const moduleConfig = require("./build/module.config.js")
 
-console.log(moduleConfig)
 let config = {
     entry: {
         bundle: './main.js'
@@ -63,7 +62,5 @@ if (isDev) {
         }
     }
 }
-
-
 
 module.exports = config;
